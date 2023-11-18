@@ -1,0 +1,63 @@
+﻿@page
+@model RazorPagesPizza.Pages.PizzaListModel
+@{
+    ViewData["Title"] = "Pizza List";
+}
+<h1>Pizza List 🍕</h1>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group mb-2">
+        <label asp-for="NewPizza.name" class="control-label">Name</label>
+        <input asp-for="NewPizza.name" class="form-control" />
+        <span asp-validation-for="NewPizza.name" class="text-danger"></span>
+    </div>
+    <div class="form-group form-check mb-2">
+        <label class="form-check-label">
+            <input class="form-check-input" asp-for="NewPizza.isGlutenFree" /> @Html.DisplayNameFor(model => model.NewPizza.isGlutenFree)
+        </label>
+    </div>
+    <div class="form-group mb-2">
+        <label asp-for="NewPizza.Price" class="control-label"></label>
+        <input asp-for="NewPizza.Price" class="form-control" />
+        <span asp-validation-for="NewPizza.Price" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-2">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+<table class="table mt-5">
+    <thead>
+        <tr>
+            <th scope="col">SN</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Gluten Free</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 1;
+        }
+        @foreach (var pizza in Model.PizzaList)
+        {
+            
+            <tr>
+                <td>@i</td>
+                <td>@pizza.name</td>
+                <td>@($"{pizza.Price:C}")</td>
+                <td>@(pizza.isGlutenFree ? "✔️" : string.Empty)</td>
+                <td>
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@pizza.Id">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
